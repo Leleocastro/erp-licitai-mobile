@@ -33,17 +33,22 @@ class AppRouter {
   );
 
   Future<String?> _redirect(BuildContext context, GoRouterState state) async {
-    final token = await authInterceptor.getToken();
-    final isAuthRoute = state.matchedLocation == '/login';
+    try {
+      final token = await authInterceptor.getToken();
+      final isAuthRoute = state.matchedLocation == '/login';
 
-    if (token == null || token.isEmpty) {
+      if (token == null || token.isEmpty) {
+        return isAuthRoute ? null : '/login';
+      }
+
+      if (isAuthRoute) {
+        return '/dashboard';
+      }
+
+      return null;
+    } catch (e) {
+      final isAuthRoute = state.matchedLocation == '/login';
       return isAuthRoute ? null : '/login';
     }
-
-    if (isAuthRoute) {
-      return '/dashboard';
-    }
-
-    return null;
   }
 }
