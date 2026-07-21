@@ -1,4 +1,4 @@
-appId: com.licitai.erp.mobile
+appId: br.gov.licitai.erp_licitai_mobile
 ---
 - launchApp
 - tapOn:
