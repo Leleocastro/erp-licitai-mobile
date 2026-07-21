@@ -7,6 +7,7 @@ import '../network/auth_interceptor.dart';
 import '../routes/app_router.dart';
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
+import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/domain/usecases/login_usecase.dart';
 import '../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../features/auth/domain/usecases/check_auth_usecase.dart';
@@ -36,7 +37,7 @@ Future<void> configureDependencies() async {
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(dio: getIt()),
   );
-  getIt.registerLazySingleton<AuthRepositoryImpl>(
+  getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       remoteDataSource: getIt(),
       authInterceptor: getIt(),
