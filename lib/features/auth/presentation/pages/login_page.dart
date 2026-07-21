@@ -62,14 +62,16 @@ class LoginPage extends StatelessWidget {
                         if (state is AuthError) {
                           return Padding(
                             padding: const EdgeInsets.only(top: 16),
-                            child: Text(
-                              key: const Key('core_login_error_text'),
-                              state.message,
-                              style: const TextStyle(
-                                color: AppColors.error,
-                                fontSize: 14,
+                            child: Semantics(
+                              identifier: 'core_login_error_text',
+                              child: Text(
+                                state.message,
+                                style: const TextStyle(
+                                  color: AppColors.error,
+                                  fontSize: 14,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           );
                         }

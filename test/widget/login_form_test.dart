@@ -9,6 +9,12 @@ import 'package:erp_licitai_mobile/features/auth/presentation/widgets/login_form
 
 class MockAuthBloc extends Mock implements AuthBloc {}
 
+Finder findBySemanticsId(String identifier) {
+  return find.byWidgetPredicate(
+    (widget) => widget is Semantics && widget.properties.identifier == identifier,
+  );
+}
+
 void main() {
   late MockAuthBloc mockAuthBloc;
 
@@ -31,14 +37,14 @@ void main() {
     testWidgets('renders email and password fields', (tester) async {
       await tester.pumpWidget(buildTestableWidget(const LoginForm()));
 
-      expect(find.byKey(const Key('core_login_input_email')), findsOneWidget);
-      expect(find.byKey(const Key('core_login_input_senha')), findsOneWidget);
+      expect(findBySemanticsId('core_login_input_email'), findsOneWidget);
+      expect(findBySemanticsId('core_login_input_senha'), findsOneWidget);
     });
 
     testWidgets('renders submit button', (tester) async {
       await tester.pumpWidget(buildTestableWidget(const LoginForm()));
 
-      expect(find.byKey(const Key('core_login_btn_submit')), findsOneWidget);
+      expect(findBySemanticsId('core_login_btn_submit'), findsOneWidget);
       expect(find.text('Entrar'), findsOneWidget);
     });
 
@@ -46,7 +52,7 @@ void main() {
       await tester.pumpWidget(buildTestableWidget(const LoginForm()));
 
       // Tap submit without entering email
-      await tester.tap(find.byKey(const Key('core_login_btn_submit')));
+      await tester.tap(findBySemanticsId('core_login_btn_submit'));
       await tester.pumpAndSettle();
 
       expect(find.text('Informe seu e-mail'), findsOneWidget);
@@ -57,10 +63,13 @@ void main() {
 
       // Enter email but not password
       await tester.enterText(
-        find.byKey(const Key('core_login_input_email')),
+        find.descendant(
+          of: findBySemanticsId('core_login_input_email'),
+          matching: find.byType(TextFormField),
+        ),
         'test@example.com',
       );
-      await tester.tap(find.byKey(const Key('core_login_btn_submit')));
+      await tester.tap(findBySemanticsId('core_login_btn_submit'));
       await tester.pumpAndSettle();
 
       expect(find.text('Informe sua senha'), findsOneWidget);
@@ -70,10 +79,13 @@ void main() {
       await tester.pumpWidget(buildTestableWidget(const LoginForm()));
 
       await tester.enterText(
-        find.byKey(const Key('core_login_input_email')),
+        find.descendant(
+          of: findBySemanticsId('core_login_input_email'),
+          matching: find.byType(TextFormField),
+        ),
         'invalidemail',
       );
-      await tester.tap(find.byKey(const Key('core_login_btn_submit')));
+      await tester.tap(findBySemanticsId('core_login_btn_submit'));
       await tester.pumpAndSettle();
 
       expect(find.text('E-mail invalido'), findsOneWidget);
@@ -83,14 +95,20 @@ void main() {
       await tester.pumpWidget(buildTestableWidget(const LoginForm()));
 
       await tester.enterText(
-        find.byKey(const Key('core_login_input_email')),
+        find.descendant(
+          of: findBySemanticsId('core_login_input_email'),
+          matching: find.byType(TextFormField),
+        ),
         'test@example.com',
       );
       await tester.enterText(
-        find.byKey(const Key('core_login_input_senha')),
+        find.descendant(
+          of: findBySemanticsId('core_login_input_senha'),
+          matching: find.byType(TextFormField),
+        ),
         '123',
       );
-      await tester.tap(find.byKey(const Key('core_login_btn_submit')));
+      await tester.tap(findBySemanticsId('core_login_btn_submit'));
       await tester.pumpAndSettle();
 
       expect(find.text('Senha deve ter no minimo 6 caracteres'), findsOneWidget);

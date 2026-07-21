@@ -2,12 +2,12 @@ appId: com.licitai.erp.mobile
 ---
 - launchApp
 - tapOn:
-    key: "core_login_input_email"
+    id: "core_login_input_email"
 - inputText: "admin@licitai.com.br"
 - tapOn:
-    key: "core_login_input_senha"
+    id: "core_login_input_senha"
 - inputText: "123456"
 - tapOn:
-    key: "core_login_btn_submit"
+    id: "core_login_btn_submit"
 - assertVisible:
-    key: "core_dashboard_txt_welcome"
+    id: "core_dashboard_txt_welcome"

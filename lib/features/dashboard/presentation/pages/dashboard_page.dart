@@ -19,12 +19,14 @@ class DashboardPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Bem-vindo ao ERP Licitai',
-                key: const Key('core_dashboard_txt_welcome'),
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+              Semantics(
+                identifier: 'core_dashboard_txt_welcome',
+                child: Text(
+                  'Bem-vindo ao ERP Licitai',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ),
               const SizedBox(height: 24),
               Expanded(
@@ -34,29 +36,37 @@ class DashboardPage extends StatelessWidget {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                   children: [
-                    const _ModuleCard(
-                      key: Key('core_dashboard_card_licitacoes'),
-                      icon: Icons.gavel,
-                      label: 'Licitacoes',
-                      color: AppColors.primary,
+                    Semantics(
+                      identifier: 'core_dashboard_card_licitacoes',
+                      child: const _ModuleCard(
+                        icon: Icons.gavel,
+                        label: 'Licitacoes',
+                        color: AppColors.primary,
+                      ),
                     ),
-                    const _ModuleCard(
-                      key: Key('core_dashboard_card_contratos'),
-                      icon: Icons.description,
-                      label: 'Contratos',
-                      color: AppColors.secondary,
+                    Semantics(
+                      identifier: 'core_dashboard_card_contratos',
+                      child: const _ModuleCard(
+                        icon: Icons.description,
+                        label: 'Contratos',
+                        color: AppColors.secondary,
+                      ),
                     ),
-                    const _ModuleCard(
-                      key: Key('core_dashboard_card_fornecedores'),
-                      icon: Icons.business,
-                      label: 'Fornecedores',
-                      color: Colors.orange,
+                    Semantics(
+                      identifier: 'core_dashboard_card_fornecedores',
+                      child: const _ModuleCard(
+                        icon: Icons.business,
+                        label: 'Fornecedores',
+                        color: Colors.orange,
+                      ),
                     ),
-                    const _ModuleCard(
-                      key: Key('core_dashboard_card_relatorios'),
-                      icon: Icons.bar_chart,
-                      label: 'Relatorios',
-                      color: Colors.purple,
+                    Semantics(
+                      identifier: 'core_dashboard_card_relatorios',
+                      child: const _ModuleCard(
+                        icon: Icons.bar_chart,
+                        label: 'Relatorios',
+                        color: Colors.purple,
+                      ),
                     ),
                   ],
                 ),
@@ -71,7 +81,6 @@ class DashboardPage extends StatelessWidget {
 
 class _ModuleCard extends StatelessWidget {
   const _ModuleCard({
-    super.key,
     required this.icon,
     required this.label,
     required this.color,

@@ -43,73 +43,80 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextFormField(
-            key: const Key('core_login_input_email'),
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
-            decoration: const InputDecoration(
-              labelText: 'E-mail',
-              prefixIcon: Icon(Icons.email_outlined),
+          Semantics(
+            identifier: 'core_login_input_email',
+            child: TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'E-mail',
+                prefixIcon: Icon(Icons.email_outlined),
+              ),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Informe seu e-mail';
+                }
+                if (!value.contains('@')) {
+                  return 'E-mail invalido';
+                }
+                return null;
+              },
             ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Informe seu e-mail';
-              }
-              if (!value.contains('@')) {
-                return 'E-mail invalido';
-              }
-              return null;
-            },
           ),
           const SizedBox(height: 16),
-          TextFormField(
-            key: const Key('core_login_input_senha'),
-            controller: _passwordController,
-            obscureText: _obscurePassword,
-            textInputAction: TextInputAction.done,
-            onFieldSubmitted: (_) => _onSubmit(),
-            decoration: InputDecoration(
-              labelText: 'Senha',
-              prefixIcon: const Icon(Icons.lock_outlined),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscurePassword ? Icons.visibility : Icons.visibility_off,
+          Semantics(
+            identifier: 'core_login_input_senha',
+            child: TextFormField(
+              controller: _passwordController,
+              obscureText: _obscurePassword,
+              textInputAction: TextInputAction.done,
+              onFieldSubmitted: (_) => _onSubmit(),
+              decoration: InputDecoration(
+                labelText: 'Senha',
+                prefixIcon: const Icon(Icons.lock_outlined),
+                suffixIcon: IconButton(
+                  key: const Key('core_login_btn_toggle_password'),
+                  icon: Icon(
+                    _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
                 ),
-                onPressed: () {
-                  setState(() {
-                    _obscurePassword = !_obscurePassword;
-                  });
-                },
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Informe sua senha';
+                }
+                if (value.length < 6) {
+                  return 'Senha deve ter no minimo 6 caracteres';
+                }
+                return null;
+              },
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Informe sua senha';
-              }
-              if (value.length < 6) {
-                return 'Senha deve ter no minimo 6 caracteres';
-              }
-              return null;
-            },
           ),
           const SizedBox(height: 24),
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               final isLoading = state is AuthLoading;
-              return ElevatedButton(
-                key: const Key('core_login_btn_submit'),
-                onPressed: isLoading ? null : _onSubmit,
-                child: isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text('Entrar'),
+              return Semantics(
+                identifier: 'core_login_btn_submit',
+                child: ElevatedButton(
+                  onPressed: isLoading ? null : _onSubmit,
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text('Entrar'),
+                ),
               );
             },
           ),
