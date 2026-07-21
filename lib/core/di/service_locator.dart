@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,12 +22,10 @@ Future<void> configureDependencies() async {
 
   // Network
   final dio = DioClient.create(
-    baseUrl: kDebugMode
-        ? 'http://localhost:3000/api'
-        : const String.fromEnvironment(
-            'API_BASE_URL',
-            defaultValue: 'https://api.licitai.com.br',
-          ),
+    baseUrl: const String.fromEnvironment(
+      'API_BASE_URL',
+      defaultValue: 'https://api.licitai.com.br',
+    ),
     secureStorage: secureStorage,
   );
   getIt.registerLazySingleton<Dio>(() => dio);
