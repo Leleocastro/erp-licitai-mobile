@@ -7,6 +7,7 @@ class AuthInterceptor extends Interceptor {
   final FlutterSecureStorage secureStorage;
 
   static const _tokenKey = 'jwt_token';
+  static const _refreshTokenKey = 'refresh_token';
 
   @override
   void onRequest(
@@ -27,6 +28,7 @@ class AuthInterceptor extends Interceptor {
   ) async {
     if (err.response?.statusCode == 401) {
       await secureStorage.delete(key: _tokenKey);
+      await secureStorage.delete(key: _refreshTokenKey);
     }
     handler.next(err);
   }
@@ -41,5 +43,17 @@ class AuthInterceptor extends Interceptor {
 
   Future<String?> getToken() async {
     return secureStorage.read(key: _tokenKey);
+  }
+
+  Future<void> saveRefreshToken(String token) async {
+    await secureStorage.write(key: _refreshTokenKey, value: token);
+  }
+
+  Future<void> clearRefreshToken() async {
+    await secureStorage.delete(key: _refreshTokenKey);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return secureStorage.read(key: _refreshTokenKey);
   }
 }

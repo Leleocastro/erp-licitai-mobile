@@ -5,7 +5,8 @@ class AuthModel extends Equatable {
     required this.id,
     required this.email,
     required this.name,
-    required this.token,
+    required this.accessToken,
+    required this.refreshToken,
     this.cpf,
     this.orgaoId,
     this.roles = const [],
@@ -14,20 +15,23 @@ class AuthModel extends Equatable {
   final String id;
   final String email;
   final String name;
-  final String token;
+  final String accessToken;
+  final String refreshToken;
   final String? cpf;
   final String? orgaoId;
   final List<String> roles;
 
   factory AuthModel.fromJson(Map<String, dynamic> json) {
+    final usuario = json['usuario'] as Map<String, dynamic>;
     return AuthModel(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      name: json['name'] as String,
-      token: json['token'] as String,
-      cpf: json['cpf'] as String?,
-      orgaoId: json['orgao_id'] as String?,
-      roles: (json['roles'] as List<dynamic>?)
+      id: usuario['id'] as String,
+      email: usuario['email'] as String,
+      name: usuario['nome'] as String,
+      accessToken: json['access_token'] as String,
+      refreshToken: json['refresh_token'] as String,
+      cpf: usuario['cpf'] as String?,
+      orgaoId: usuario['orgao_id'] as String?,
+      roles: (usuario['roles'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           [],
@@ -35,5 +39,14 @@ class AuthModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, email, name, token, cpf, orgaoId, roles];
+  List<Object?> get props => [
+        id,
+        email,
+        name,
+        accessToken,
+        refreshToken,
+        cpf,
+        orgaoId,
+        roles,
+      ];
 }
