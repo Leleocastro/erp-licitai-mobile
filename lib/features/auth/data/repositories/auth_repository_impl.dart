@@ -24,14 +24,24 @@ class AuthRepositoryImpl implements AuthRepository {
       password: password,
     );
 
-    await _authInterceptor.saveToken(authModel.token);
+    await _authInterceptor.saveToken(authModel.accessToken);
+    await _authInterceptor.saveRefreshToken(authModel.refreshToken);
 
     return _toEntity(authModel);
   }
 
   @override
   Future<void> logout() async {
+    final refreshToken = await _authInterceptor.getRefreshToken();
+    if (refreshToken != null && refreshToken.isNotEmpty) {
+      try {
+        await _remoteDataSource.logout(refreshToken: refreshToken);
+      } catch (_) {
+        // Ignore logout API errors, clear local state anyway
+      }
+    }
     await _authInterceptor.clearToken();
+    await _authInterceptor.clearRefreshToken();
   }
 
   @override
