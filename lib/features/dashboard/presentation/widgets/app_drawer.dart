@@ -96,8 +96,8 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout, color: Colors.red),
             title: const Text('Sair', style: TextStyle(color: Colors.red)),
             onTap: () {
-              Navigator.pop(context);
               context.read<AuthBloc>().add(const AuthLogoutRequested());
+              Navigator.pop(context);
             },
           ),
         ],
